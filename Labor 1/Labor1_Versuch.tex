@@ -82,10 +82,10 @@
 \newpage
 
 \section{Einleitung}
-    In diesem Bericht wird der Umgang mit  Hardwarekomponenten der Elektrotechnik erlernt, außerdem werden erste Schaltungen entwickelt. Zuerst wird eine Leuchtdiode mit Taster betrieben, anschließend werden verschiedene integrierte Schaltkreise (IC) hinzugefügt. Schließlich wird eine 7-Segment-Anzeige über eine BCD-Codierung angesteuert.
+    In diesem Bericht wird der Umgang mit  Hardwarekomponenten der Elektrotechnik erlernt, außerdem werden erste Schaltungen entwickelt. Zuerst wird eine Leuchtdiode mit Taster betrieben, anschließend werden verschiedene integrierte Schaltkreise (IC) hinzugefügt. Schließlich wird eine 7-Segment-Anzeige über eine BCD-Codierung angesteuert. Verwendete Abbildungen und Tabellen in dieser Ausarbeitung sind -- soweit nicht anders angegeben -- von dem Autor erstellt worden.
     
 \section{Hardwareentwurf}
-    Die Hardwareschaltungen wurde bereits durch die Aufgabenstellung festgelegt. An dieser Stelle ist also keine Entwurfsplanung nötig. An manchen Stellen wurde leicht vom Breadboardlayout aus der Laboranleitung abgewichen.
+    Die Hardwareschaltungen wurde bereits durch die Aufgabenstellung festgelegt. An dieser Stelle ist also keine Entwurfsplanung nötig. Das Breadboardlayout ist dem Abschnitt \ref{sec:1} zu entnehmen. An manchen Stellen wurde leicht vom Layout aus der Laboranleitung abgewichen.
 
     Alle drei Schaltungen werden mit einer Versorgungsspannung \(V_{cc}\) von \SI{3.3}{\volt} betrieben. 
 
@@ -107,6 +107,7 @@
         \footnote{Herausgeber: Texas Instruments. Abgerufen am 08.04.2022 von \url{https://www.ti.com/lit/ds/symlink/cd74hc4511.pdf?HQS=dis-mous-null-mousermode-dsf-pf-null-wwe&ts=1649347240369&ref_url=https\%253A\%252F\%252Fwww.mouser.com\%252F}}
 
 \section{Aufbau}
+    \label{sec:1}
     Zur Besseren Übersicht befinden sich die Fotoaufnahmen des Breadboardlayout im Anhang \ref{app:1} dieses Dokuments.
 
     Abbildung \ref{fig:1} zeigt den Aufbau der LED-Schaltung. Die NAND-Schaltung ist der Abbildung \ref{fig:2} zu entnehmen. Als nächstes wird der Aufbau der NOR-Schaltung in Abbildung \ref{fig:3} gezeigt. Zuletzt wird der BCD-Codewandler betrachtet. Der zugehörige Schaltungsaufbau wird in \ref{fig:4} gezeigt. 
@@ -174,10 +175,15 @@
 \section{Schlussfolgerungen}
     Es lässt sich folgern, dass Taster und IC so arbeiten, wie die Laboranleitung verlangt, und ein korrektes Schaltungsdesign verwendet wurde.   
 
-    Der Taster arbeitet als Schließer und lässt einen Stromfuss zu, solange er gedrückt ist. Auch das NAND und das NOR arbeiten wie erwartet. Der BCD-Codewandler übersetzt einen Zustand am DIP-Schalter und die 7-Segment-Anzeige zeigt die dazugehörige Ziffer an. 
+    Der Taster arbeitet als Schließer und lässt einen Stromfluss zu, solange er gedrückt ist. Auch das NAND und das NOR arbeiten wie erwartet. Der BCD-Codewandler übersetzt einen Zustand am DIP-Schalter und die 7-Segment-Anzeige zeigt die dazugehörige Ziffer an. Für Eingangszustände größer als \texttt{1001} ist der Output als \textit{Blank} definiert. Daher bleibt in diesen Fällen das Display schwarz.
+
+    Mir persönlich fiel es leicht, die Schaltungen aufzubauen und in Betrieb zu nehmen. Etwaige Fehler konnte ich schnell beheben. Auch die Tatsache, dass ich die Versuche nachgearbeitet habe, hat mich nur wenig beeinträchtigt.
 
 \section{Verbesserungsvorschläge}
-    Mir war nicht klar, wie groß der Umfang des Kapitel \quoteenv{Schlussfolgerungen} sein soll. Jede Schaltung hat ihre Funktion erfüllt und waren keine Abweichungen zu erkennen. Bis auf die Wahrheitstabellen mussten keine Messparameter beschrieben oder interpretiert werden.
+
+    In diesem Versuchsbericht habe ich keine Schaltbilder oder andere Diagramme aus der Laboranleitung übernommen und hier erneut gezeigt. Ich bin mir nicht sicher, ob diese Vermeidung von Redundanz zu einem Nachteil für mich wird. Hätte der Bericht so formuliert werden sollen, dass auch ein außenstehender Leser die Ergebnisse nicht nur nachvollziehen, sondern auch nachbilden kann?
+
+    Mir ist nicht klar, wie groß der Umfang des Kapitel \quoteenv{Schlussfolgerungen} sein soll. Jede Schaltung hat ihre Funktion erfüllt und es waren keine Abweichungen zu erkennen. Bis auf die Wahrheitstabellen mussten keine Messparameter beschrieben oder interpretiert werden.
 
 \appendix
 
@@ -186,7 +192,7 @@
 
     Abbildung \ref{fig:1} zeigt den Aufbau der LED-Schaltung. Die NAND-Schaltung ist der Abbildung \ref{fig:2} zu entnehmen. Als nächstes wird der Aufbau der NOR-Schaltung in Abbildung \ref{fig:3} gezeigt. Zuletzt wird der BCD-Codewandler betrachtet. Der zugehörige Schaltungsaufbau wird in \ref{fig:4} gezeigt.
 
-    \begin{figure}
+    \begin{figure}[hb]
         \centering
         \begin{subfigure}[t]{0.5\textwidth}
             \centering
