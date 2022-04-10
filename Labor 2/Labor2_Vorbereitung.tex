@@ -1,0 +1,335 @@
+\documentclass[
+    paper=a4,
+    % fontsize=12,
+    % DIV=calc,
+]{scrartcl}
+
+\usepackage[T1]{fontenc}	
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath} 
+
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+\usepackage{svg}
+\usepackage[
+    locale		=	DE, 					%	Deutsche Normen
+	detect-all,								%	Richtige Font im Textmodus/Mathemodus
+	per-mode	=	fraction,				%	Bruchstrich darstellen
+	range-units	=	repeat,					%	Einheiten wiederholt darstellen bei sirange
+	range-phrase=	{{ bis }},	
+]{siunitx}
+\usepackage{amsmath}
+\usepackage{circuitikz}
+
+
+\usepackage{hyperref}
+
+\definecolor{colorblue}{HTML}{0480CC}				% color for weblinks
+\definecolor{colordarkblue}{HTML}{4C1DCC}			% no use case at the moment
+\definecolor{colorgreen}{HTML}{26CC1B}				% color for missing macro
+\definecolor{colorred}{HTML}{CC1204}				% color for edit macro
+
+
+\KOMAoptions{
+    numbers=noendperiod,
+}
+
+\hypersetup{
+    bookmarksnumbered   =   true,
+    breaklinks          =   true,
+    colorlinks          =   true,
+    linkcolor           =   colorred,
+    urlcolor            =   colorblue,
+    pdftitle            =   {Die digitale Zweifaltigkeit},
+    pdfsubject          =   {Versuchsbericht Labor Digitaltechnik},    
+    pdfauthor           =   {Jan Hoegen},
+}
+
+\ctikzset{
+    logic ports=european,
+    logic ports/scale=1.0,
+    logic ports/fill=lightgray,
+    tripoles/european not symbol=ieee circle,
+}
+\usetikzlibrary{babel}
+
+\graphicspath{/Anhang}
+
+\newcommand{\shadowsection}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\protect\numberline{\thesection}{#1}}
+}
+
+\newcommand{\legend}[1]{\par\footnotesize\textbf{Legende}: #1\par}
+\newcommand{\figsource}[1]{\par\footnotesize\textbf{Quelle:} #1\par}
+
+\newcommand{\quoteenv}[1]{\glqq #1\grqq} 
+
+\titlehead{
+    \textsc{Hochschule Karlsruhe}\\
+    University of Applied Sciences\\
+    Studiengang EITB SS 22}
+\subject{Digitaltechnik Labor 2}
+\title{Von halben und vollen Addierern}
+\subtitle{Vorbereitung}
+\author{Jan Hoegen\thanks{Matrikelnumer: 82358}}
+\publishers{Betreuer: Prof. Dr.\,-Ing. Jan Bauer}
+\date{Erstellt am: \today}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Umformung des Halbaddierers}
+    In diesem Abschnitt wird ein Halbaddierer durch ausschließlich NAND- und NOR-Gatter realisiert. Nachdem im nächsten Abschnitt auf gleiche Weise Ein Volladdierer umgeformt wird, kann schließlich ein 2-Bit-Ripple-Carry-Addierer nur durch NANDs und NOrs gebildet werden.
+
+    \subsection{Umformen der Gleichung}
+        Für den \textit{Carry-Out} des Halbaddieres gilt gemäß der Laboranleitung:
+        \[c_0 = a \wedge b\]
+
+        Nach Umformen durch Idempotenz und Involution ergibt sich:
+        \begin{align*}
+            c_0 &= a \wedge b\\
+            c_0 &= ( a \wedge b ) \wedge ( a \wedge b )\\
+            c_0 &= \overline{\overline{( a \wedge b ) \wedge ( a \wedge b )}}\\
+            c_0 &= \overline{\overline{(a \wedge b)} \wedge \overline{(a \wedge b)}}\\
+        \end{align*}
+
+        Dies entspricht 2 NAND-Gattern, der Ausgang des Ersten liegt dabei auf beiden Eingängen des Zweiten.
+
+    \subsection{Schaltbild des umgeformten Halbaddierers}
+        \label{subsec:1}
+        Der vollständige Halbaddierer mit Umformung nach oben stehender Rechnung ergibt folgendes Schaltbild:
+        \begin{center}
+            \begin{tikzpicture}
+                \node(a) at (0,0.23) {$a$};
+                \node(b) at (0,-0.23) {$b$};
+                \node(s) at (8,0){$s$};
+                \node(c) at (8,-1.5) {$c_0$};
+                \node[xor port] (XOR2) at (3,0){};    
+                \node[nand port] (NANDa) at (3,-1.5){};
+                \node[nand port] (NANDc) at (6,-1.5){};
+
+                \draw (XOR2.out) |- (s);
+                \draw (NANDc.out) -- (c);
+                
+                \draw (a) -| (XOR2.in 1);
+                \draw (0.5,0.23) node[circ]{} |-  (NANDa.in 2);
+
+                \draw (b) -| (XOR2.in 2) node[circ]{} |-  (NANDa.in 1);
+
+                \draw (NANDa.out) -| node[circ, midway]{} (NANDc.in 1) |- (NANDc.in 2);
+            \end{tikzpicture}
+        \end{center}
+
+    \subsection{Simulation der Schaltung}
+       Die oben stehende Schaltung in logisim-evolution aufgebaut erzeugt die Wahrheitstabelle aus \ref{tab:1}. Sie stimmt mit der eines Halbaddierers überein, die Schaltung erfüllt damit weiterhin ihre Funktion.
+        \begin{table}[ht]
+            \centering
+            \caption{Wahrheitstabelle des simulierten Halbaddierers}
+            \label{tab:1}
+            \begin{tabular}{cc|cc}\toprule
+                $a$&$b$&$c$&$s$\\\midrule
+                $0$&$0$&$0$&$0$\\
+                $0$&$1$&$0$&$1$\\
+                $1$&$0$&$0$&$1$\\
+                $1$&$1$&$1$&$0$\\\bottomrule
+                \end{tabular}
+        \end{table}
+
+% \clearpage
+
+\section{Umformen des Volladdierers}
+    Nachdem zuerst der Halbaddierer durch NORs und NANDs realisiert wurde, wird nun analog mit dem Volladdierer vorgegangen.
+
+    \subsection{Umformen der Gleichung}
+
+        Für den Ausgang des \textit{Carry-Out} eines Volladdierers gilt gemäß der Laboranleitung: 
+        \[c_0 = (a \wedge b) \vee (\bar{s} \wedge c_i)\]
+
+        Nach Umformen durch Involution ergibt sich:
+        \begin{align*}
+            c_0 &= (a \wedge b) \vee (\bar{s} \wedge c_i)\\
+            c_0 &= \overline{\overline{(a \wedge b) \vee (\bar{s} \wedge c_i)}}\\
+            c_0 &= \overline{(\overline{a \wedge b}) \wedge (\overline{\bar{s} \wedge c_i}})
+        \end{align*}
+
+        Dies entspricht drei NAND-Gattern. Jede Klammer sowie ihre Verknüpfung ist ein NAND-Gatter. 
+
+    \subsection{Schaltbild des umgeformten Volladdierers}
+        \label{subsec:2}
+        Das vollständige Schaltbild eines Volladdierers nach oben stehender Umformung sieht dann so aus:
+
+        \begin{center}
+            \begin{tikzpicture}
+                \node (a) at (0,0.23) {$a$};
+                \node (b) at (0,-0.23) {$b$};
+                \node (c) at (0,-1.73) {$c_i$};
+                \node (s) at (11,-0.23) {$s$};
+                \node (cb) at (11, -1.73) {$c_0$};
+                \node[xor port] (XOR2) at (3,0){};    
+                \node[xor port] (XORb) at (9,-0.23){};
+                \node[nand port] (NANDa) at (6,-1.5){};  
+                \node[nand port] (NANDb) at (9,-1.73){};    
+                \node[nand port] (NANDc) at (3,-3){};     
+
+                \draw (a) -| (XOR2.in 1);
+                \draw (0.5,0.23) node[circ]{} |-  (NANDc.in 2);
+
+                \draw (b) -| (XOR2.in 2) node[circ]{} |- (NANDc.in 1);
+
+                \draw (XOR2.out) -| node[circ]{} (NANDa.in 1) |- (XORb.in 1);
+
+                \draw (c) -| (NANDa.in 2);
+                \draw (3,-1.73) node[circ]{} |- (XORb.in 2);
+
+                \draw (XORb.out) |- (s);
+                \draw (NANDa.out) -| (NANDb.in 1);
+                \draw (NANDc.out) -| (NANDb.in 2);
+                \draw (NANDb.out) |- (cb);
+            \end{tikzpicture}
+        \end{center}
+
+    \subsection{Simulation der Schaltung}
+        Diese Schaltung in logisim-evolution aufgebaut erzeugt die Wahrheitstabelle in \ref{tab:2}. Sie stimmt mit der eines Volladdierers überein, die Schaltung erfüllt also weiterhin ihre Funktion.
+
+        \begin{table}[h]
+            \centering
+            \caption{Wahrheitstabelle des simulierten Volladdierers}
+            \label{tab:2}
+            \begin{tabular}{ccc|cc}\toprule
+                $a$&$b$&$c_i$&$c_0$&$s$\\\midrule
+                $0$&$0$&$0$&$0$&$0$\\
+                $0$&$0$&$1$&$0$&$1$\\
+                $0$&$1$&$0$&$0$&$1$\\
+                $0$&$1$&$1$&$1$&$0$\\
+                $1$&$0$&$0$&$0$&$1$\\
+                $1$&$0$&$1$&$1$&$0$\\
+                $1$&$1$&$0$&$1$&$0$\\
+                $1$&$1$&$1$&$1$&$1$\\\bottomrule
+            \end{tabular}
+        \end{table}
+
+% \clearpage
+
+\section{Umformen des 2-Bit-Addierer-Netz}
+
+    \subsection{Blockschaltbild des 2-Bit Ripple-Carry-Addiernetz}
+        Das Schaltbild des 2-Bit Ripple-Carry-Addiernetz in Blockschaltung sieht so aus:
+
+        \begin{center}
+            \begin{tikzpicture}
+                \node (a0) at (0,-0.15) {$a_0$};
+                \node (b0) at (0,-1.85) {$b_0$};
+                \node (a1) at (0,-4.15) {$a_1$};
+                \node (b1) at (0,-5.85) {$b_1$};
+                \node (s0) at (8,-0.15) {$s_0$};
+                \node (s1) at (8,-4.15) {$s_1$};
+                \node (c1) at (8,-5.85) {$c_1$};
+                
+                \node [flipflop] (ha) at (3,-1){HA};
+                \node [flipflop] (va) at (3,-5){VA};
+
+                \draw (a0) -- (ha.bpin 1);
+                \draw (b0) -- (ha.bpin 3);
+                \draw (ha.bpin 6) -- (s0);
+                \draw (ha.bpin 4) -| (5,-3) node[right]{$c_0$} -| (va.bup);
+
+                \draw (a1) -- (va.bpin 1);
+                \draw (b1) -- (va.bpin 3);
+                \draw (va.bpin 6) |- (s1);
+                \draw (va.bpin 4) |- (c1);
+            \end{tikzpicture}
+        \end{center}
+
+    \subsection{Umformen des Schaltbilds}
+        Das vollständige Schaltbild mit einsetzen der Layouts aus Abschnitt \ref{subsec:1} und \ref{subsec:2} ergibt: 
+
+        \begin{tikzpicture}
+            \node (a0) at (0,0.23) {$a_0$};
+            \node (b0) at (0,-0.23) {$b_0$};
+            \node (a1) at (0,-2.77) {$a_1$};
+            \node (b1) at (0,-3.23) {$b_1$};
+            \node (s0) at (14,0) {$s_0$};
+            \node (s1) at (14,-1.73) {$s_1$};
+            \node (c1) at (14,-3.48) {$c_1$};
+
+            \node [xor port] (XOR1) at (3,0) {};
+            \node [xor port] (XOR2) at (9,-1.73) {};
+            \node [xor port] (XOR3) at (3,-3) {};
+            
+            \node [nand port] (NAND1) at (3,-1.5) {};
+            \node [nand port] (NAND2) at (6,-1.5) {};
+            \node [nand port] (NAND3) at (9,-3.25) {};
+            \node [nand port] (NAND4) at (3,-4.5) {};
+            \node [nand port ](NAND5) at (12,-3.48) {};
+
+            \draw (a0) -| (XOR1.in 1);
+            \draw (0.5,0.23) node[circ]{} |- (NAND1.in 2);
+            
+            \draw (b0) -| (XOR1.in 2);
+            \draw (XOR1.in 2) node[circ]{} -| (NAND1.in 1);
+
+            \draw (XOR1.out) |- (s0);
+        
+            \draw (NAND1.out) -| node[circ]{} (NAND2.in 1) -| (NAND2.in 2);
+
+            \draw (a1) -| (XOR3.in 1);
+            \draw (0.5,-2.77) node[circ]{} |- (NAND4.in 2);
+
+            \draw (b1) -| (XOR3.in 2);
+            \draw (XOR3.in 2) node[circ]{} -| (NAND4.in 1);
+
+            \draw (NAND2.out) -| (XOR2.in 1);
+
+            \draw (XOR3.out) -| node[circ]{} (XOR2.in 2) -| (NAND3.in 1);
+            \draw (XOR2.out) |- (s1);
+
+            \draw (6.5,-1.5) node[above]{$c_0$} node[circ]{} |- (NAND3.in 2);
+
+            \draw (NAND4.out) -| (NAND5.in 2);
+            \draw (NAND3.out) -| (NAND5.in 1);
+
+            \draw (NAND5.out) |- (c1);
+        \end{tikzpicture}
+
+    \subsection{Simulation der Schaltung}
+        Diese Schaltung in logisim-evolution aufgebaut erzeugt die Wahrheitstabelle in \ref{tab:3}. Sie stimmt mit der eines 2-Bit-Ripple-Carry-Addierers überein, die Schaltung erfüllt also weiterhin ihre Funktion.
+
+        \begin{table}[h]
+            \centering
+            \caption{Wahrheitstabelle des simulierten 2-Bit-Ripple-Carry-Addierer}
+            \label{tab:3}
+            \begin{tabular}{cccc|ccc}\toprule
+                $a_0$&$b_0$&$a_1$&$b_1$&$c_1$&$s_1$&$s_0$\\\toprule
+                $0$&$0$&$0$&$0$&$0$&$0$&$0$\\
+                $0$&$0$&$0$&$1$&$0$&$1$&$0$\\
+                $0$&$0$&$1$&$0$&$0$&$1$&$0$\\
+                $0$&$0$&$1$&$1$&$1$&$0$&$0$\\
+                $0$&$1$&$0$&$0$&$0$&$0$&$1$\\
+                $0$&$1$&$0$&$1$&$0$&$1$&$1$\\
+                $0$&$1$&$1$&$0$&$0$&$1$&$1$\\
+                $0$&$1$&$1$&$1$&$1$&$0$&$1$\\
+                $1$&$0$&$0$&$0$&$0$&$0$&$1$\\
+                $1$&$0$&$0$&$1$&$0$&$1$&$1$\\
+                $1$&$0$&$1$&$0$&$0$&$1$&$1$\\
+                $1$&$0$&$1$&$1$&$1$&$0$&$1$\\
+                $1$&$1$&$0$&$0$&$0$&$1$&$0$\\
+                $1$&$1$&$0$&$1$&$1$&$0$&$0$\\
+                $1$&$1$&$1$&$0$&$1$&$0$&$0$\\
+                $1$&$1$&$1$&$1$&$1$&$1$&$0$\\\bottomrule    
+                \end{tabular}
+            \end{table}
+
+\end{document}

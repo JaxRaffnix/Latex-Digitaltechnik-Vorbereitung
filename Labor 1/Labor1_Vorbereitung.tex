@@ -1,0 +1,47 @@
+\documentclass{scrartcl}
+
+\usepackage[ngerman]{babel}
+
+\usepackage{siunitx}
+\usepackage{amsmath}
+
+\titlehead{HKA EITB SS 22}
+\subject{Digitaltechnik Labor}
+\title{Vorbereitung zum Versuch: Die digitale Zweifaltigkeit}
+\subtitle{Versuch 1}
+\author{Jan Hoegen\\Matrikelnumer: 82358}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Die Eingabevariablen \(\overline{LT}, \overline{BI}, \overline{LE}\)}
+
+Die Ausgangsvariablen \(a,b,c,d\) werden als \(a...d\), die Eingangsvariablen \(A,B,C,D\) als \(A...D\) zusammengefasst. 
+\begin{align*}
+    \intertext{Für den Ausschalter \(\overline{BI}\) (\textit{blanking input}) gilt:}
+    \overline{BI}=0 &\Longrightarrow a...d=0\\
+    \overline{BI}=1 &\Longrightarrow a...d \sim A...D
+    \intertext{Für den Leuchtentest \(\overline{LT}\) (\textit{lamp test}) gil:}
+    \overline{LT}=0 &\Longrightarrow a...d=1\\
+    \overline{LT}=1 \wedge \overline{BI}=0 &\Longrightarrow a...d=0
+    \intertext{Für den Verriegelschalter \(\overline{LE}\) (\textit{latch enable input}) gilt:}
+    \overline{LE}=0 &\Longrightarrow a...d \sim A...D\\
+    \overline{LE}=1 &\Longrightarrow \text{Letzter Wert von \(A...D\) wird gespeichert und \(a...d\) bleiben konstant.}
+\end{align*}
+
+% LE: latch enable Input. Wenn LE=H, dann wird der Output gehalten und wird bei Zustandsänderung der Eingaben unverändert.   
+% BI: blanking input. Wenn BI=L, dann alle Segmente L
+% LT: Lamp test. Wenn LT=L gesetzt, dann alle Segmente H. Wenn BI=L und LT=H, dann alle Segmente L.  
+
+\section{Bestimmung der Eingangsspannung bei schnellstmöglichster Anzeigeänderung}
+
+    Gesucht ist diejenige Spannung an den Pins der Eingänge \(A, B, C\) und \(D\), bei der die Anzeige schnellstmöglichst umschaltet.
+
+    Aus dem Datenblatt wird ersichtlich, dass die Ausgangsübergangszeit \textit{output transition time} kleiner wird, desto größer die Versorgungsspannung \(V_{CC}\) gewählt wird.
+    Die maxmimale empfohlene Versorgungsspannung wird mit \(V_{CC}=\SI{6}{\volt}\) angegeben. Für die Eingangsspannung \(V_I\) gilt:
+    \[V_{I} = V_{CC}= \SI{6}{\volt}\]
+
+    Wenn man den empfohlenen Bereich des Bauelements verlässt und sich dem maximal zulässigen Bereich annähert, so kann \(V_{CC}=\SI{7}{\volt}\) gewählt werden. Dann gilt:
+    \[V_{I} = V_{CC} + \SI{0.75}{\volt}= \SI{7.5}{\volt}\]
+\end{document}

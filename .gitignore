@@ -1,0 +1,8 @@
+*svg-inkscape
+*.aux
+*_latexmk
+*.fls
+*.log
+*.out
+*.gz
+*.toc

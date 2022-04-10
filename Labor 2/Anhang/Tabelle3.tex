@@ -1,0 +1,292 @@
+\documentclass [15pt,a4paper,twoside]{article}
+\usepackage[german,shorthands=off]{babel}        % shorhands=off is required for babel french in combination with tikz karnaugh....
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{verbose,a4paper, tmargin=3.5cm,bmargin=3.5cm,lmargin=2.5cm,rmargin=2.5cm,headsep=1cm,footskip=1.5cm}
+\usepackage{fancyhdr}
+\usepackage{colortbl}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz -timing}
+\usepackage{tikz}
+\usetikzlibrary{karnaugh}
+\pagestyle{fancy}
+
+\definecolor{LogisimKMapColor0}{RGB}{128,0,0}
+\definecolor{LogisimKMapColor1}{RGB}{230,25,75}
+\definecolor{LogisimKMapColor2}{RGB}{250,190,190}
+\definecolor{LogisimKMapColor3}{RGB}{170,110,40}
+\definecolor{LogisimKMapColor4}{RGB}{245,130,48}
+\definecolor{LogisimKMapColor5}{RGB}{255,215,180}
+\definecolor{LogisimKMapColor6}{RGB}{128,128,0}
+\definecolor{LogisimKMapColor7}{RGB}{255,255,25}
+\definecolor{LogisimKMapColor8}{RGB}{210,245,60}
+\definecolor{LogisimKMapColor9}{RGB}{0,0,128}
+\definecolor{LogisimKMapColor10}{RGB}{145,30,180}
+\definecolor{LogisimKMapColor11}{RGB}{60,180,175}
+\definecolor{LogisimKMapColor12}{RGB}{0,130,203}
+\definecolor{LogisimKMapColor13}{RGB}{230,190,255}
+\definecolor{LogisimKMapColor14}{RGB}{170,255,195}
+\definecolor{LogisimKMapColor15}{RGB}{240,50,230}
+
+\fancyhead{}
+\fancyhead[C] {Logisim-evolution generiertes Dokument auf Sat Apr 09 02:02:50 CEST 2022}
+\fancyfoot[C] {\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\makeatother
+
+\begin{document}
+\section{Einführung}
+Dieses Dokument wurde durch logisim-evolution erstellt. Jeder Teil der TeX-Quellen kann problemlos in Ihren eigenen Dokumenten verwendet werden. Falls Sie alle/Teile dieser generierten TeX-Quellen verwenden möchten, vergessen Sie bitte (1) nicht, die benötigten Pakete anzugeben, und (2) fügen Sie einen Hinweis hinzu, dass diese Quelle durch logisim-evolution generiert wurde.
+%===============================================================================
+\section{Wahrheitstabelle}
+Die Tabelle kann viel zu groß sein, um auf der Seite angezeigt zu werden. Zum Zeitpunkt der Generierung wurde keine Berechnung der Größe der Tabelle in Bezug auf die Breite / Höhe der Seite durchgeführt.
+%-------------------------------------------------------------------------------
+\subsection{Verdichtete Wahrheitstabelle}
+\begin{center}
+\begin{tabular}{cccc|ccc}
+$a0$&$b0$&$a1$&$b1$&$c1$&$s1$&$s0$\\
+\hline
+$0$&$0$&$0$&$0$&$0$&$0$&$0$\\
+$0$&$0$&$0$&$1$&$0$&$1$&$0$\\
+$0$&$0$&$1$&$0$&$0$&$1$&$0$\\
+$0$&$0$&$1$&$1$&$1$&$0$&$0$\\
+$0$&$1$&$0$&$0$&$0$&$0$&$1$\\
+$0$&$1$&$0$&$1$&$0$&$1$&$1$\\
+$0$&$1$&$1$&$0$&$0$&$1$&$1$\\
+$0$&$1$&$1$&$1$&$1$&$0$&$1$\\
+$1$&$0$&$0$&$0$&$0$&$0$&$1$\\
+$1$&$0$&$0$&$1$&$0$&$1$&$1$\\
+$1$&$0$&$1$&$0$&$0$&$1$&$1$\\
+$1$&$0$&$1$&$1$&$1$&$0$&$1$\\
+$1$&$1$&$0$&$0$&$0$&$1$&$0$\\
+$1$&$1$&$0$&$1$&$1$&$0$&$0$\\
+$1$&$1$&$1$&$0$&$1$&$0$&$0$\\
+$1$&$1$&$1$&$1$&$1$&$1$&$0$\\
+
+\end{tabular}
+\end{center}
+%-------------------------------------------------------------------------------
+\subsection{Vollständige Wahrheitstabelle}
+\begin{center}
+\begin{tabular}{cccc|ccc}
+$a0$&$b0$&$a1$&$b1$&$c1$&$s1$&$s0$\\
+\hline
+$0$&$0$&$0$&$0$&$0$&$0$&$0$\\
+$0$&$0$&$0$&$1$&$0$&$1$&$0$\\
+$0$&$0$&$1$&$0$&$0$&$1$&$0$\\
+$0$&$0$&$1$&$1$&$1$&$0$&$0$\\
+$0$&$1$&$0$&$0$&$0$&$0$&$1$\\
+$0$&$1$&$0$&$1$&$0$&$1$&$1$\\
+$0$&$1$&$1$&$0$&$0$&$1$&$1$\\
+$0$&$1$&$1$&$1$&$1$&$0$&$1$\\
+$1$&$0$&$0$&$0$&$0$&$0$&$1$\\
+$1$&$0$&$0$&$1$&$0$&$1$&$1$\\
+$1$&$0$&$1$&$0$&$0$&$1$&$1$\\
+$1$&$0$&$1$&$1$&$1$&$0$&$1$\\
+$1$&$1$&$0$&$0$&$0$&$1$&$0$\\
+$1$&$1$&$0$&$1$&$1$&$0$&$0$\\
+$1$&$1$&$1$&$0$&$1$&$0$&$0$\\
+$1$&$1$&$1$&$1$&$1$&$1$&$0$\\
+
+\end{tabular}
+\end{center}
+%===============================================================================
+\section{Karnaugh Diagramme}
+Dieser Abschnitt zeigt verschiedene Versionen der Karnaugh-Diagramme der angegebenen Funktionen.
+%-------------------------------------------------------------------------------
+\subsection{Leere Karnaugh-Diagramme}
+\begin{center}
+\begin{tikzpicture}[karnaugh,disable bars,x=1\kmunitlength,y=1\kmunitlength,kmbar left sep=1\kmunitlength,grp/.style n args={4}{#1,fill=#1!30,minimum width= #2\kmunitlength,minimum height=#3\kmunitlength,rounded corners=0.2\kmunitlength,fill opacity=0.6,rectangle,draw}]
+\karnaughmap{4}{$c1$}{{$a0$}{$a1$}{$b0$}{$b1$}}{}{
+\draw[kmbox] (-0.5,4.5)
+   node[below left]{$a0$, $b0$}
+   node[above right]{$a1$, $b1$} +(-0.2,0.2)
+   node[above left]{$c1$};\draw (0,4) -- (-0.7,4.7);
+\foreach \x/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (\x+0.5,4.2) {\1};
+}
+\foreach \y/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (-0.4,-0.5-\y+4) {\1};
+}
+}
+\end{tikzpicture}
+\end{center}
+\begin{center}
+\begin{tikzpicture}[karnaugh,disable bars,x=1\kmunitlength,y=1\kmunitlength,kmbar left sep=1\kmunitlength,grp/.style n args={4}{#1,fill=#1!30,minimum width= #2\kmunitlength,minimum height=#3\kmunitlength,rounded corners=0.2\kmunitlength,fill opacity=0.6,rectangle,draw}]
+\karnaughmap{4}{$s1$}{{$a0$}{$a1$}{$b0$}{$b1$}}{}{
+\draw[kmbox] (-0.5,4.5)
+   node[below left]{$a0$, $b0$}
+   node[above right]{$a1$, $b1$} +(-0.2,0.2)
+   node[above left]{$s1$};\draw (0,4) -- (-0.7,4.7);
+\foreach \x/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (\x+0.5,4.2) {\1};
+}
+\foreach \y/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (-0.4,-0.5-\y+4) {\1};
+}
+}
+\end{tikzpicture}
+\end{center}
+\begin{center}
+\begin{tikzpicture}[karnaugh,disable bars,x=1\kmunitlength,y=1\kmunitlength,kmbar left sep=1\kmunitlength,grp/.style n args={4}{#1,fill=#1!30,minimum width= #2\kmunitlength,minimum height=#3\kmunitlength,rounded corners=0.2\kmunitlength,fill opacity=0.6,rectangle,draw}]
+\karnaughmap{4}{$s0$}{{$a0$}{$a1$}{$b0$}{$b1$}}{}{
+\draw[kmbox] (-0.5,4.5)
+   node[below left]{$a0$, $b0$}
+   node[above right]{$a1$, $b1$} +(-0.2,0.2)
+   node[above left]{$s0$};\draw (0,4) -- (-0.7,4.7);
+\foreach \x/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (\x+0.5,4.2) {\1};
+}
+\foreach \y/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (-0.4,-0.5-\y+4) {\1};
+}
+}
+\end{tikzpicture}
+\end{center}
+%-------------------------------------------------------------------------------
+\subsection{Ausgefüllt in Karnaugh-Diagrammen}
+\begin{center}
+\begin{tikzpicture}[karnaugh,disable bars,x=1\kmunitlength,y=1\kmunitlength,kmbar left sep=1\kmunitlength,grp/.style n args={4}{#1,fill=#1!30,minimum width= #2\kmunitlength,minimum height=#3\kmunitlength,rounded corners=0.2\kmunitlength,fill opacity=0.6,rectangle,draw}]
+\karnaughmap{4}{$c1$}{{$a0$}{$a1$}{$b0$}{$b1$}}
+{0000010100010111}{
+\draw[kmbox] (-0.5,4.5)
+   node[below left]{$a0$, $b0$}
+   node[above right]{$a1$, $b1$} +(-0.2,0.2)
+   node[above left]{$c1$};\draw (0,4) -- (-0.7,4.7);
+\foreach \x/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (\x+0.5,4.2) {\1};
+}
+\foreach \y/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (-0.4,-0.5-\y+4) {\1};
+}
+}
+\end{tikzpicture}
+\end{center}
+\begin{center}
+\begin{tikzpicture}[karnaugh,disable bars,x=1\kmunitlength,y=1\kmunitlength,kmbar left sep=1\kmunitlength,grp/.style n args={4}{#1,fill=#1!30,minimum width= #2\kmunitlength,minimum height=#3\kmunitlength,rounded corners=0.2\kmunitlength,fill opacity=0.6,rectangle,draw}]
+\karnaughmap{4}{$s1$}{{$a0$}{$a1$}{$b0$}{$b1$}}
+{0101101001101001}{
+\draw[kmbox] (-0.5,4.5)
+   node[below left]{$a0$, $b0$}
+   node[above right]{$a1$, $b1$} +(-0.2,0.2)
+   node[above left]{$s1$};\draw (0,4) -- (-0.7,4.7);
+\foreach \x/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (\x+0.5,4.2) {\1};
+}
+\foreach \y/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (-0.4,-0.5-\y+4) {\1};
+}
+}
+\end{tikzpicture}
+\end{center}
+\begin{center}
+\begin{tikzpicture}[karnaugh,disable bars,x=1\kmunitlength,y=1\kmunitlength,kmbar left sep=1\kmunitlength,grp/.style n args={4}{#1,fill=#1!30,minimum width= #2\kmunitlength,minimum height=#3\kmunitlength,rounded corners=0.2\kmunitlength,fill opacity=0.6,rectangle,draw}]
+\karnaughmap{4}{$s0$}{{$a0$}{$a1$}{$b0$}{$b1$}}
+{0011001111001100}{
+\draw[kmbox] (-0.5,4.5)
+   node[below left]{$a0$, $b0$}
+   node[above right]{$a1$, $b1$} +(-0.2,0.2)
+   node[above left]{$s0$};\draw (0,4) -- (-0.7,4.7);
+\foreach \x/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (\x+0.5,4.2) {\1};
+}
+\foreach \y/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (-0.4,-0.5-\y+4) {\1};
+}
+}
+\end{tikzpicture}
+\end{center}
+%-------------------------------------------------------------------------------
+\subsection{Ausgefüllt in Karnaugh-Diagrammen mit Abdeckungen}
+\begin{center}
+\begin{tikzpicture}[karnaugh,disable bars,x=1\kmunitlength,y=1\kmunitlength,kmbar left sep=1\kmunitlength,grp/.style n args={4}{#1,fill=#1!30,minimum width= #2\kmunitlength,minimum height=#3\kmunitlength,rounded corners=0.2\kmunitlength,fill opacity=0.6,rectangle,draw}]
+\karnaughmap{4}{$c1$}{{$a0$}{$a1$}{$b0$}{$b1$}}
+{0000010100010111}{
+\draw[kmbox] (-0.5,4.5)
+   node[below left]{$a0$, $b0$}
+   node[above right]{$a1$, $b1$} +(-0.2,0.2)
+   node[above left]{$c1$};\draw (0,4) -- (-0.7,4.7);
+\foreach \x/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (\x+0.5,4.2) {\1};
+}
+\foreach \y/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (-0.4,-0.5-\y+4) {\1};
+}
+   \node[grp={LogisimKMapColor1}{0.8}{3.8}](n0) at(2.5,2) {};
+   \node[grp={LogisimKMapColor2}{1.8}{0.8}](n1) at(2,1.5) {};
+   \node[grp={LogisimKMapColor3}{1.8}{0.8}](n2) at(3,1.5) {};
+}
+\end{tikzpicture}
+\end{center}
+\begin{center}
+\begin{tikzpicture}[karnaugh,disable bars,x=1\kmunitlength,y=1\kmunitlength,kmbar left sep=1\kmunitlength,grp/.style n args={4}{#1,fill=#1!30,minimum width= #2\kmunitlength,minimum height=#3\kmunitlength,rounded corners=0.2\kmunitlength,fill opacity=0.6,rectangle,draw}]
+\karnaughmap{4}{$s1$}{{$a0$}{$a1$}{$b0$}{$b1$}}
+{0101101001101001}{
+\draw[kmbox] (-0.5,4.5)
+   node[below left]{$a0$, $b0$}
+   node[above right]{$a1$, $b1$} +(-0.2,0.2)
+   node[above left]{$s1$};\draw (0,4) -- (-0.7,4.7);
+\foreach \x/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (\x+0.5,4.2) {\1};
+}
+\foreach \y/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (-0.4,-0.5-\y+4) {\1};
+}
+   \node[grp={LogisimKMapColor1}{0.8}{1.8}](n0) at(1.5,3) {};
+   \node[grp={LogisimKMapColor2}{0.8}{0.8}](n1) at(1.5,3.5) {};
+   \node[grp={LogisimKMapColor2}{0.8}{0.8}](n2) at(1.5,0.5) {};
+   \node[grp={LogisimKMapColor3}{0.8}{1.8}](n3) at(3.5,3) {};
+   \node[grp={LogisimKMapColor4}{0.8}{0.8}](n4) at(3.5,3.5) {};
+   \node[grp={LogisimKMapColor4}{0.8}{0.8}](n5) at(3.5,0.5) {};
+   \node[grp={LogisimKMapColor5}{0.8}{0.8}](n6) at(0.5,1.5) {};
+   \node[grp={LogisimKMapColor6}{0.8}{0.8}](n7) at(2.5,1.5) {};
+}
+\end{tikzpicture}
+\end{center}
+\begin{center}
+\begin{tikzpicture}[karnaugh,disable bars,x=1\kmunitlength,y=1\kmunitlength,kmbar left sep=1\kmunitlength,grp/.style n args={4}{#1,fill=#1!30,minimum width= #2\kmunitlength,minimum height=#3\kmunitlength,rounded corners=0.2\kmunitlength,fill opacity=0.6,rectangle,draw}]
+\karnaughmap{4}{$s0$}{{$a0$}{$a1$}{$b0$}{$b1$}}
+{0011001111001100}{
+\draw[kmbox] (-0.5,4.5)
+   node[below left]{$a0$, $b0$}
+   node[above right]{$a1$, $b1$} +(-0.2,0.2)
+   node[above left]{$s0$};\draw (0,4) -- (-0.7,4.7);
+\foreach \x/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (\x+0.5,4.2) {\1};
+}
+\foreach \y/\1 in %
+{0/00,1/01,2/11,3/10} {
+   \node at (-0.4,-0.5-\y+4) {\1};
+}
+   \node[grp={LogisimKMapColor1}{3.8}{0.8}](n0) at(2,2.5) {};
+   \node[grp={LogisimKMapColor2}{3.8}{0.8}](n1) at(2,0.5) {};
+}
+\end{tikzpicture}
+\end{center}
+%===============================================================================
+\section{Minimale Ausdrücke}
+$c1 = a1 \cdot b1+a0 \cdot b0 \cdot b1+a0 \cdot b0 \cdot a1$~\\
+$s1 =  \overline{a0}  \cdot  \overline{a1}  \cdot b1+ \overline{b0}  \cdot  \overline{a1}  \cdot b1+ \overline{a0}  \cdot a1 \cdot  \overline{b1} + \overline{b0}  \cdot a1 \cdot  \overline{b1} +a0 \cdot b0 \cdot  \overline{a1}  \cdot  \overline{b1} +a0 \cdot b0 \cdot a1 \cdot b1$~\\
+$s0 =  \overline{a0}  \cdot b0+a0 \cdot  \overline{b0} $~\\
+\end{document}
