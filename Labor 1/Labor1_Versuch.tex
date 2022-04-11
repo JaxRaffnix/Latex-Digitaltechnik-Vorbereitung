@@ -24,7 +24,20 @@
 	range-phrase=	{{ bis }},	
 ]{siunitx}
 
+% \usepackage{amsmath}
+% \usepackage{circuitikz}
+
+\usepackage{subcaption}
+
 \usepackage{xcolor}
+
+\usepackage{csquotes}
+\usepackage[
+    backend=biber,
+    % style=IEEE,
+]{biblatex}
+
+\usepackage{float}
 
 \usepackage{hyperref}
 
@@ -44,10 +57,22 @@
     colorlinks          =   true,
     linkcolor           =   colorred,
     urlcolor            =   colorblue,
+    citecolor           =   colorgreen,
     pdftitle            =   {Die digitale Zweifaltigkeit},
     pdfsubject          =   {Versuchsbericht Labor Digitaltechnik},    
     pdfauthor           =   {Jan Hoegen},
 }
+
+% \ctikzset{
+%     logic ports=european,
+%     logic ports/scale=1.0,
+%     logic ports/fill=lightgray,
+%     tripoles/european not symbol=ieee circle,
+% }
+% \usetikzlibrary{babel}
+
+\addbibresource{quellen.bib}
+
 
 \graphicspath{/Anhang}
 
@@ -90,21 +115,50 @@
     Alle drei Schaltungen werden mit einer Versorgungsspannung \(V_{cc}\) von \SI{3.3}{\volt} betrieben. 
 
     \paragraph{LED-Schaltung}
-        In der ersten Schaltung wird ein Taster als Schließer verwendet. In Reihe dazu befindet sich eine rote LED wird mit einem Vorwiderstand von \SI{220}{\ohm}. Die LED wurde in Durchlassrichtung geschalten.
+        In der Schaltung \ref{fig:s1} wird ein Taster als Schließer verwendet. In Reihe dazu befindet sich eine rote LED wird mit einem Vorwiderstand von \SI{220}{\ohm}. Die LED wurde in Durchlassrichtung geschalten.
+
+        \begin{center}
+            \includegraphics[width=0.3\textwidth]{Anhang/Schaltung1.png}
+            \captionof{figure}{Schaltung der LED mit Taster}
+            \figsource{\cite{bauer}}
+            \label{fig:s1}
+        \end{center}
 
     \paragraph{NAND-Schaltung}
-        Be der NAND-Schaltung wurde der \texttt{SN74HC00N} verwendet. An zwei Eingängen wird je ein Taster mit einem hochohmigen Widerstand von \SI{10}{\kilo\ohm} als Pull-down geschalten. Die Verwendung der LED ist analog zur vorherigen Schaltung.
+        Be der NAND-Schaltung wurde der \texttt{SN74HC00N} verwendet. An zwei Eingängen wird je ein Taster mit einem hochohmigen Widerstand von \SI{10}{\kilo\ohm} als Pull-down geschalten. Die Verwendung der LED ist analog zur vorherigen Schaltung. Der Schaltplan ist in Abbildung \ref{fig:s2}.
+
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{Anhang/Schaltung2.png}
+            \captionof{figure}{NAND-Schaltung}
+            \figsource{\cite{bauer}}
+            \label{fig:s2}
+        \end{center}
 
     \paragraph{NOR-Schaltung}
-        Der Schaltungsaufbau ist hier identisch zur NAND-Schaltung, lediglich der IC wird durch den \texttt{SN74HC02N} ausgetauscht.
+        Der Schaltungsaufbau ist hier identisch zur NAND-Schaltung, lediglich der IC wird durch den \texttt{SN74HC02N} ausgetauscht. Abbildung \ref{fig:s3} zeigt den zugehörigen Schaltplan.
+
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{Anhang/Schaltung3.png}
+            \captionof{figure}{NOR-Schaltung}
+            \figsource{\cite{bauer}}
+            \label{fig:s3}
+        \end{center}
 
     \paragraph{BCD-Codewandler}
         Erläuterungen zu den Eingängen LT, BI und LE sind dem Dokument "`Vorbereitung zum Versuch: Die digitale Zweifaltigkeit. Versuch 1"' von Jan Hoegen zu entnehmen. 
         
+        Abbildung \ref{fig:s4} zeigt den Schaltungsaufbau.
         Die Kathoden der Anzeige werden an einen einzelnen \SI{1}{\kilo\ohm} Widerstand angeschlossen. Dies hat zur Folge, dass die Leuchtstärke der Anzeige bei verschiedenen Eingangszuständen nicht konstant ist. Am DIP-Schalter als Eingang werden erneut Pull-Down-Widerstände von \SI{10}{\kilo\ohm} verwendet.
 
-        Statt des \texttt{M74C4511} wurde der \texttt{CD74HC4511E} verwendet. Die Funktion sowie die Belegung der Pins ist unverändert, das zugehörige Datenblatt befindet sich im Anhang \ref{app:2}.%
-        \footnote{Herausgeber: Texas Instruments. Abgerufen am 08.04.2022 von \url{https://www.ti.com/lit/ds/symlink/cd74hc4511.pdf?HQS=dis-mous-null-mousermode-dsf-pf-null-wwe&ts=1649347240369&ref_url=https\%253A\%252F\%252Fwww.mouser.com\%252F}}
+        Statt des \texttt{M74C4511} wurde der \texttt{CD74HC4511E} verwendet. Die Funktion sowie die Belegung der Pins ist unverändert, das zugehörige Datenblatt \cite{datenblatt} befindet sich im Anhang \ref{app:2}.%
+        % \footnote{Herausgeber: Texas Instruments. Abgerufen am 08.04.2022 von \url{https://www.ti.com/lit/ds/symlink/cd74hc4511.pdf?HQS=dis-mous-null-mousermode-dsf-pf-null-wwe&ts=1649347240369&ref_url=https\%253A\%252F\%252Fwww.mouser.com\%252F}}
+
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{Anhang/Schaltung4.png}
+            \captionof{figure}{BCD-Codewandler}
+            \figsource{\cite{bauer}}
+            \label{fig:s4}
+        \end{center}
 
 \section{Aufbau}
     \label{sec:1}
@@ -117,7 +171,7 @@
 
     \paragraph{NAND-Schaltung} Tabelle \ref{tab:1} zeigt den beobachteten Zusammenhang zwischen Taster und der LED der Schaltung. Erst dann, wenn beide Taster gleichzeitig betätigt werden, geht die LED aus. Dies entspricht den Erwartungen an ein NAND-Gatter.
 
-    \begin{table}[h]
+    \begin{table}[H]
         \centering
         \caption{Wahrheitstabelle der NAND-Schaltung}
         \label{tab:1}
@@ -147,7 +201,7 @@
 
     \paragraph{BCD-Decoder} In der Tabelle \ref{tab:3} wird zu jeder Schalterstellung des DIP die angezeigte Ziffer notiert. Es fallen zwei Dinge auf: Zum einen entspricht die angezeigte Ziffer der Codierung im Datenblatt. Zum anderen sind alle Segmente aus, wenn ein Wert höher als \texttt{1001} eingestellt wird. Beides entspricht den Vorgaben im Datenblatt.
     
-    \begin{table}
+    \begin{table}[h]
         \centering
         \caption{Wahrheitstabelle des BCD-Codewandlers}
         \label{tab:3}
@@ -181,9 +235,11 @@
 
 \section{Verbesserungsvorschläge}
 
-    In diesem Versuchsbericht habe ich keine Schaltbilder oder andere Diagramme aus der Laboranleitung übernommen und hier erneut gezeigt. Ich bin mir nicht sicher, ob diese Vermeidung von Redundanz zu einem Nachteil für mich wird. Hätte der Bericht so formuliert werden sollen, dass auch ein außenstehender Leser die Ergebnisse nicht nur nachvollziehen, sondern auch nachbilden kann?
+    % In diesem Versuchsbericht habe ich keine Schaltbilder oder andere Diagramme aus der Laboranleitung übernommen und hier erneut gezeigt. Ich bin mir nicht sicher, ob diese Vermeidung von Redundanz zu einem Nachteil für mich wird. Hätte der Bericht so formuliert werden sollen, dass auch ein außenstehender Leser die Ergebnisse nicht nur nachvollziehen, sondern auch nachbilden kann?
 
     Mir ist nicht klar, wie groß der Umfang des Kapitel \quoteenv{Schlussfolgerungen} sein soll. Jede Schaltung hat ihre Funktion erfüllt und es waren keine Abweichungen zu erkennen. Bis auf die Wahrheitstabellen mussten keine Messparameter beschrieben oder interpretiert werden.
+
+\printbibliography[heading=bibintoc]
 
 \appendix
 
