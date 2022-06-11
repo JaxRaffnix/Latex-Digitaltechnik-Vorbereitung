@@ -4,6 +4,7 @@
     % DIV=calc,
 ]{scrartcl}
 
+
 \usepackage[T1]{fontenc}	
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
@@ -27,13 +28,15 @@
 \usepackage{amsmath}
 \usepackage{circuitikz}
 
-
 \usepackage{hyperref}
 
+
+\definecolor{colordarkblue}{HTML}{4C1DCC}			% color for internal links
 \definecolor{colorblue}{HTML}{0480CC}				% color for weblinks
-\definecolor{colordarkblue}{HTML}{4C1DCC}			% no use case at the moment
-\definecolor{colorgreen}{HTML}{26CC1B}				% color for missing macro
+\definecolor{colorgreen}{HTML}{26CC1B}				% color for citations
+\definecolor{coloryellow}{HTML}{F0B707}				% color for missing macro
 \definecolor{colorred}{HTML}{CC1204}				% color for edit macro
+\colorlet{colorgray}{black!40}						% color for editedit macro
 
 
 \KOMAoptions{
@@ -44,11 +47,12 @@
     bookmarksnumbered   =   true,
     breaklinks          =   true,
     colorlinks          =   true,
-    linkcolor           =   colorred,
+    linkcolor           =   colordarkblue,
     urlcolor            =   colorblue,
+    citecolor           =   colorgreen,
     pdftitle            =   {Labor 4 Jan Hoegen},
     pdfsubject          =   {Versuchsvorbereitung Labor Digitaltechnik},    
-    pdfauthor           =   {Jan Hoegen},
+    pdfauthor           =   {Von Jan Hoegen},
 }
 
 \ctikzset{
@@ -58,6 +62,14 @@
     tripoles/european not symbol=ieee circle,
 }
 \usetikzlibrary{babel}
+
+\newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
+\newcommand{\DrawBox}[3][]{%
+    \tikz[overlay,remember picture]{
+    \draw[black,#1]
+      ($(#2)+(-0.5em,2.0ex)$) rectangle
+      ($(#3)+(0.75em,-0.75ex)$);}
+}
 
 \graphicspath{/Anhang}
 
@@ -71,14 +83,22 @@
 
 \newcommand{\quoteenv}[1]{\glqq #1\grqq} 
 
+\newcommand{\edit}[1]{\textcolor{colorred}{#1}}
+
+\newcommand{\missing}{%
+    \textcolor{coloryellow}{MISSING}%
+	\PackageWarning{\jobname}{You used the 'missing' macro at this line. Remove it before finalising document.}%
+}
+
+
 \titlehead{
     \textsc{Hochschule Karlsruhe}\\
     University of Applied Sciences\\
     Studiengang EITB SS 22}
 \subject{Digitaltechnik Labor 4}
 \title{Parkplatzzähler: Endlich endliche Automaten}
-\subtitle{Vorbereitung}
-\author{Jan Hoegen\thanks{Matrikelnumer: 82358}}
+\subtitle{Vorbereitung, Version 2}
+\author{Jan Hoegen\thanks{Matrikelnumer: 82358. E-Mail: \href{mailto:jan.hoegen@web.de}{jan.hoegen@web.de}}}
 \publishers{Betreuer: Prof. Dr.\,-Ing. Jan Bauer}
 \date{Erstellt am: \today}
 
@@ -86,6 +106,11 @@
 \begin{document}
 
 \maketitle
+
+\begin{abstract}
+    \noindent
+    Änderungen gegenüber der ursprünglichen Version wurden durch \edit{rote Schrift} gekennzeichnet.
+\end{abstract}
 
 \tableofcontents
 
@@ -96,8 +121,8 @@
 
     Die beiden 74HC4511 sind ein BCD-zu-7-Segment-Codewandler. Abhängig der Eingangsvariablen A bis D werden die Ausgänge a bis g auf HIGH bzw. LOW gesetzt, sodass die 7 Segmente der Anzeige eine Dezimalzahl 0 bis 9 anzeigen. Dabei beschreibt das Datenblatt eine feste Codiertabelle, in der jedem Eingangszustand eine Ziffer zugeordnet wird.
 
-    Der 74HC192 addiert jedes Mal, wenn der UP-Eingang eine positive Taktflanke aufweist, zu seinem Aktuellen Zustand die Binärzahl 0001 dazu und speichert das Ergebnis als seinen neuen Zustand. Ähnlich verhält es sich mit dem DOWN-Eingang, jedoch wird hier mit der Binärzahl 0001 subtrahiert. Dabei können die Ausgangsvariablen \(Q_0\) bis \(Q_3\) Binärzahlen von 0000 bis 1001 anzeigen. Dies entspricht den Dezimalzahlen 0 bis 9.\footnote{Der BCD-Codewandler ist ebenfalls für die Zahlen 0 bis 9 definiert, also den Binärzahlen 0000 bis 1001.} Führt das Ergebnis der beiden Summanden zu einer Zahl, die größer als dieser Zahlenbereich ist, so wird der Carry-Ausgang auf HIGH gesetzt und die Ausgänge \(Q_0\) bis \(Q_3\) auf LOW. Erzeugt die Rechnung jedoch einen Underflow, so wird borrow auf HIGH gesetzt.
-
+    Der 74HC192 addiert jedes Mal, wenn der UP-Eingang eine positive Taktflanke aufweist, zu seinem Aktuellen Zustand die Binärzahl 0001 dazu und speichert das Ergebnis als seinen neuen Zustand. Ähnlich verhält es sich mit dem DOWN-Eingang, jedoch wird hier mit der Binärzahl 0001 subtrahiert. Dabei können die Ausgangsvariablen \(Q_0\) bis \(Q_3\) Binärzahlen von 0000 bis 1001 anzeigen. Dies entspricht den Dezimalzahlen 0 bis 9.\footnote{Der BCD-Codewandler ist ebenfalls für die Zahlen 0 bis 9 definiert, also den Binärzahlen 0000 bis 1001.} Führt das Ergebnis der beiden Summanden zu einer Zahl, die größer als dieser Zahlenbereich ist, so wird der Carry-Ausgang auf HIGH gesetzt und \edit{der Zählerzustand wird auf 0000 gesetzt}. Erzeugt die Rechnung jedoch einen Underflow\edit{, also wird von 0000 subtrahiert}, so wird borrow auf HIGH gesetzt \edit{und der Zustand wird auf 1001 -- im Dezimalsystem eine 9 -- gesetzt}.
+% 
     Auf die übrigen Pins des IC wird an dieser Stelle nicht näher eingegangen.
 
     Der erste 74HC192 führt diese Funktion genau dann aus, wenn der Taster Count up bzw. Count down nach vorherigem Drücken wieder losgelassen wird.
@@ -115,104 +140,138 @@
         \centering
         \caption{Zustandscodierung der FSM}
         \label{tab:1}
-        \begin{tabular}{ccc}\toprule
-            Zustand &   $Q_1$   &   $Q_0$\\\midrule
-            idle    &   0       &   0\\
-            forw    &   o       &   1\\
-            back    &   1       &   0\\
-            wait    &   1       &   1\\\bottomrule
+        \begin{tabular}{ccccc}\toprule
+            Zustand &   $Q_1$   &   $Q_0$   &   \edit{$Dn$} &   \edit{$Up$} \\\midrule
+            idle    &   0       &   0       &   \edit{1}   &   \edit{1} \\
+            forw    &   \edit{0}&   1       &   \edit{1}   &   \edit{0} \\
+            back    &   1       &   0       &   \edit{0}   &   \edit{1} \\
+            wait    &   1       &   1       &   \edit{1}   &   \edit{1} \\\bottomrule
         \end{tabular}
     \end{table}
 
 \section{Aufbau der Zustandsübergangstabelle}
     Nun wird die Zustandsübergangstabelle in Tabelle \ref{tab:2} vervollständigt. 
 
-    \begin{table}
+    \begin{table}[h]
         \centering
         \caption{Zustandsübergangstabelle}
         \label{tab:2}
         \includegraphics[width=0.7\textwidth]{Zustandsuebergang}
     \end{table}
 
+    \clearpage
+
 \section{Auswahl des Standardbausteins}
     Da das Ergebnis der Aufgabe 0 der dritten Laborvorbereitung \(P_M=0\) lautete, ist das ASN und das ÜSN in Full-NAND zu realisieren.
 
 \section{Realisierung des Übergangschaltnetzes}
-    Das Übergangsschaltnetz wird mit Hilfe der Tabelle \ref{tab:2} in Full-NAND erstellt. Es gilt \(Q_0=D_0\) und \(Q_1=D_1\).
+    Das Übergangsschaltnetz wird mit Hilfe der Tabelle \ref{tab:2} in Full-NAND erstellt. 
+    % Es gilt \(Q_0=Q_0^+\) und \(Q_1=Q_1^+\).
     
     \begin{minipage}{0.5\textwidth}
         \centering
-            \captionof{table}{KV-Tafel für \(D_0\)}
-            \includegraphics[width=1\textwidth]{usn1.jpg}
-            \label{tab:3}    
+        \captionof{table}{KV-Tafel für \(Q_0^+\)}
+        \begin{tabular}{c*{4}{c}}\toprule
+                        &   \multicolumn{4}{c}{$S_2 S_1$}\\\cmidrule{2-5}
+            $Q_1 Q_0$   &   00                  &   01                  &   11                  &   10                      \\\midrule
+            00          &   0                   &   \tikzmark {2 left} 1&   X                   &   0                       \\
+            01          &   \tikzmark{1 left} 1 &   1                   &   \tikzmark{3 left} 1 &   X \tikzmark{1 right}    \\
+            11          &   0                   &   1                   &   1                   &   1 \tikzmark{3 right}    \\
+            10          &   0                   &   X                   &   1 \tikzmark{2 right}&   0                       \\\bottomrule
+        \end{tabular}
+        \DrawBox[thick, orange]{1 left}{1 right}
+        \DrawBox[thick, violet]{2 left}{2 right}
+        \DrawBox[thick, teal]{3 left}{3 right}        
+        \label{tab:3}    
     \end{minipage}\hfill%
     \begin{minipage}{0.5\textwidth}
-        \captionof{table}{KV-Tafel für \(D_1\)}
+        \centering
+        \captionof{table}{KV-Tafel für \(Q_1^+\)}
         \label{tab:4}
-        \includegraphics[width=1\textwidth]{usn2.jpg}
+        \begin{tabular}{*{5}{c}}\toprule
+            {}          &   \multicolumn{4}{c}{$S_2 S_1$}\\\cmidrule{2-5}
+            $Q_1 Q_0$   &   00                  &   01                  &   11                  &   10  \\\midrule
+            00          &   0                   &   0                   &   \tikzmark{6 left} X &   1   \\
+            01          &   0                   &   0                   &   1                   &   X   \\
+            11          &   0                   &  \tikzmark{5 left} 1  &   1                   &   1   \\
+            10          &   \tikzmark{4 left} 1 &   X                   &   1 \tikzmark{5 right}&   1 \tikzmark{6 right}\tikzmark{4 right}   \\\bottomrule
+        \end{tabular}
+        \DrawBox[thick, orange]{4 left}{4 right}
+        \DrawBox[thick, teal]{5 left}{5 right}
+        \DrawBox[thick, violet]{6 left}{6 right}
     \end{minipage}
 
-    Für \(D_0\) erhält man nach Umformen der disjunktiven Minimalform in Full-NAND:
+    \vspace*{1em}
+
+    Für \(Q_0^+\) erhält man nach Umformen der disjunktiven Minimalform in Full-NAND:
     \begin{align*}
-        D_0 =& S_1 \vee (Q_0 \wedge \overline{Q_1}) \vee (S_2 \wedge Q_0)\\
-        D_0 =& \overline{ \overline{\overline{\overline{S_1} \wedge \overline{ (Q_0 \wedge \overline{Q_1}) } }} \wedge \overline{ (S_2 \wedge Q_0) }}
+        Q_0^+ &= \textcolor{violet}{S_1} \vee \textcolor{orange}{(Q_0 \wedge \overline{Q_1})} \vee \textcolor{teal}{(S_2 \wedge Q_0)}\\
+        Q_0^+ &= \overline{ \overline{\overline{\overline{S_1} \wedge \overline{ (Q_0 \wedge \overline{Q_1}) } }} \wedge \overline{ (S_2 \wedge Q_0) }}
     \end{align*}
 
-    Gleiches Vorgehen für \(D_1\):
+    Gleiches Vorgehen für \(Q_1^+\):
     \begin{align*}
-        D_1 =& S_2 \vee (\overline{Q_0} \wedge Q_1) \vee (S_1 \wedge Q_1)\\
-        D_1 =& \overline{ \overline{\overline{\overline{S_2} \wedge \overline{ (\overline{Q_0} \wedge Q_1) }}} \wedge \overline{ (S_1 \wedge Q_1) }}
+        Q_1^+ &= \textcolor{violet}{S_2} \vee \textcolor{orange}{(\overline{Q_0} \wedge Q_1)} \vee \textcolor{teal}{(S_1 \wedge Q_1)}\\
+        Q_1^+ &= \overline{ \overline{\overline{\overline{S_2} \wedge \overline{ (\overline{Q_0} \wedge Q_1) }}} \wedge \overline{ (S_1 \wedge Q_1) }}
     \end{align*}
     
 \section{Realisierung des Ausgangsschaltnetzes}
-    Als Nächstes wird das Ausgangsschaltnetz in Full-NAND dargestellt. Dabei wird die Wahrheitstabelle in \ref{tab:5} aufgestellt.
-
-    \begin{table}
-        \centering
-        \caption{Wahrheitstabelle des ASN}
-        \label{tab:5}
-        \begin{tabular}{cc|cc}\toprule
-            $Q_1$   &   $Q_0$   &   $Dn$    &   $Up$\\\midrule
-            0       &   0       &   1       &   1\\
-            0       &   1       &   1       &   0\\
-            1       &   0       &   0       &   1\\
-            1       &   1       &   1       &   1\\\bottomrule
-        \end{tabular}
-    \end{table}
+    Als Nächstes wird das Ausgangsschaltnetz in Full-NAND dargestellt. Dazu wird die Wahrheitstabelle in \ref{tab:1} genutzt.
 
     \begin{minipage}{0.5\textwidth}
         \centering
             \captionof{table}{KV-Tafel für \(Up\)}
-            \includegraphics[width=1\textwidth]{asn1.jpg}
+            \begin{tabular}{ccc}\toprule
+                {}      &   \multicolumn{2}{c}{$Q_1$}                                       \\\cmidrule{2-3}
+                $Q_0$   &   0                   &   1                                       \\\midrule
+                0       &   \tikzmark{7 left} 1 &   \tikzmark{8 left} 1 \tikzmark{7 right}                                       \\
+                1       &   0                   &   1 \tikzmark{8 right}                    \\\bottomrule
+            \end{tabular}
+            \DrawBox[thick, violet]{7 left}{7 right}
+            \DrawBox[thick, orange]{8 left}{8 right}
             \label{tab:6}    
     \end{minipage}\hfill%
     \begin{minipage}{0.5\textwidth}
+        \centering
         \captionof{table}{KV-Tafel für \(Dn\)}
         \label{tab:7}
-        \includegraphics[width=1\textwidth]{asn2.jpg}
+        \begin{tabular}{ccc}\toprule
+            {}      &   \multicolumn{2}{c}{$Q_1$}                                       \\\cmidrule{2-3}
+            $Q_0$   &   0                                       &   1                   \\\midrule
+            0       &   \tikzmark{9 left} 1                     &   0                   \\
+            1       &   \tikzmark{10 left} 1 \tikzmark{9 right} &   1 \tikzmark{10 right}\\\bottomrule
+        \end{tabular}
+        \DrawBox[thick, violet]{9 left}{9 right}
+        \DrawBox[thick, orange]{10 left}{10 right}
     \end{minipage}
+
+    \vspace*{1em}
 
     Schließlich werden auch die DMF von UP und DN durch Full-NAND realisiert.
 
-    \begin{align*}
-        Up =& \overline{Q_0} \vee Q_1\\
-        UP =& \overline{Q_0 \wedge \overline{Q_1}}
-    \end{align*}
+    DMF des Ausgangs Up:
 
     \begin{align*}
-        Dn =& Q_0 \vee \overline{Q_1}\\
-        Dn =& \overline{\overline{Q_0} \wedge Q_1}
+        Up &= \textcolor{violet}{\overline{Q_0}} \vee \textcolor{orange}{Q_1}\\
+        Up &= \overline{Q_0 \wedge \overline{Q_1}}
+    \end{align*}
+
+    Dn-Ausgang als disjunktive Minimalform in Full-NAND:
+
+    \begin{align*}
+        Dn &= \textcolor{orange}{Q_0} \vee \textcolor{violet}{\overline{Q_1}}\\
+        Dn &= \overline{\overline{Q_0} \wedge Q_1}
     \end{align*}
 
 \section{Vereinfachen der Full-NAND-Lösung}
     Die Terme \(\overline{\overline{Q_0} \wedge Q_1}\) und \(\overline{Q_0 \wedge \overline{Q_1}}\) des ASN kommen bereits im Übergangsschaltnetz vor. Daher können hier zwei Gatter eingespart werden. Es sind somit insgesamt 12 NAND-Gatter notwendig.
 
 \section{Simulation der Schaltung}
-    Die aufgebaute Schaltung ist Abbildung \ref{fig:1} zu entnehmen. Die Auswertung der Schaltung erzeugt die Wahrheitstabelle \ref{tab:8}. Sie stimmt mit Tabelle \ref{tab:2} und dem Zustandsdiagramm überein. Es wurde also ein korrektes Schaltungssdesign verwendet. Außerdem wurde die Anforderung an maximal 12 NAND-Gatter erfüllt.
+    Die aufgebaute Schaltung ist Abbildung \ref{fig:1} zu entnehmen. Die Auswertung der Schaltung erzeugt die Wahrheitstabelle \ref{tab:8}. Sie stimmt mit Tabelle \ref{tab:2} und dem Zustandsdiagramm aus der Laboranleitung überein. Es wurde also ein korrektes Schaltungssdesign verwendet. Außerdem wurde die Anforderung \edit{von} maximal 12 NAND-Gatter erfüllt. \edit{Taster und Reset arbeiten wie erwartet.}
 
-    \begin{figure}
+    \begin{figure}[bh]
         \centering
-        \includegraphics[width=\textwidth]{schaltung.png}
+        \includegraphics[width=0.7\textwidth]{schaltung.png}
         \caption{Simulation der Schaltung}
         \label{fig:1}
     \end{figure}
@@ -221,26 +280,25 @@
         \centering
         \caption{Wahrheitstabelle der simulierten Schaltung}
         \label{tab:8}
-        \begin{tabular}{cccc|cc}\toprule
-            $S_2$   &   $S_1$   &   $Q_1$   &   $Q_0$   &   $Dn$    &   $Up$\\\midrule
-            0       &   0       &   0       &   0       &   1       &   1\\
-            0       &   1       &   0       &   0       &   1       &   0\\
-            0       &   1       &   0       &   1       &   1       &   0\\
-            0       &   0       &   0       &   1       &   1       &   0\\
-            1       &   1       &   0       &   1       &   1       &   1\\
-            1       &   1       &   1       &   1       &   1       &   1\\
-            1       &   0       &   1       &   1       &   1       &   1\\
-            0       &   1       &   1       &   1       &   1       &   1\\
-            0       &   0       &   1       &   1       &   1       &   1\\\midrule
-            0       &   0       &   0       &   0       &   1       &   1\\
-            1       &   0       &   0       &   0       &   0       &   1\\
-            1       &   0       &   1       &   0       &   0       &   1\\
-            0       &   0       &   1       &   0       &   0       &   1\\
-            1       &   1       &   1       &   0       &   1       &   1\\
-            1       &   1       &   1       &   1       &   1       &   1\\
-            0       &   1       &   1       &   1       &   1       &   1\\
-            0       &   1       &   1       &   0       &   1       &   1\\
-            0       &   0       &   1       &   1       &   1       &   1\\\bottomrule
+        \begin{tabular}{l|cccc|cccc}\toprule
+            State                                   &   $S_2$   &   $S_1$   &   $Q_1$   &   $Q_0$   &   \edit{$Q_0^+$}  &   \edit{$Q_0^+$} &   $Dn$    &   $Up$\\\midrule
+            idle $\rightarrow$ idle                 &   0       &   0       &   0       &   0       &   \edit{0}        &   \edit{0}       &   1       &   1\\
+            idle $\rightarrow$ \edit{forw}          &   0       &   1       &   0       &   0       &   \edit{0}               &   \edit{1}         &    1    &   0\\
+            idle $\rightarrow$ \edit{back}          &   1       &   0       &   0       &   0       &   \edit{1}        &   \edit{0}        &     0    &   1\\
+            \edit{idle $\rightarrow$ X}             &   \edit{1}       &   \edit{1}       &   \edit{0}       &   \edit{0}       &   \edit{1}        &   \edit{1}        &     \edit{1}    &   \edit{1}\\\midrule
+            \edit{back} $\rightarrow$ \edit{back}   &   0       &   0       &   1       &   0       &   \edit{1}        &   \edit{0}        &     0       &   1\\
+            \edit{back} $\rightarrow$ X             &   0       &   1       &   1       &   0       &   \edit{1}        &   \edit{1}        &     1       &   1\\
+            \edit{back} $\rightarrow$ \edit{back}   &   1       &   0       &   1       &   0       &   \edit{1}        &   \edit{0}        &     0       &   1\\
+            \edit{back} $\rightarrow$ wait          &   1       &   1       &   1       &   0       &   \edit{1}        &   \edit{1}        &     1       &   1\\\midrule
+            \edit{forw} $\rightarrow$ \edit{forw}   &   0       &   0       &   0       &   1       &   \edit{0}        &   \edit{1}        &     1       &   0\\
+            \edit{forw} $\rightarrow$ \edit{forw}   &   0       &   1       &   0       &   1       &   \edit{0}        &   \edit{1}        &     1       &   0\\
+            \edit{forw} $\rightarrow$ X             &   1       &   0       &   0       &   1       &   \edit{1}        &   \edit{1}        &     1       &   1\\
+            \edit{forw} $\rightarrow$ wait          &   1       &   1       &   0       &   1       &   \edit{1}        &   \edit{1}        &     1       &   1\\\midrule
+            wait $\rightarrow$ idle                 &   0       &   0       &   1       &   1       &   \edit{0}        &   \edit{0}        &     1       &   1\\
+            wait $\rightarrow$ wait                 &   0       &   1       &   1       &   1       &   \edit{1}        &   \edit{1}        &     1       &   1\\
+            wait $\rightarrow$ wait                 &   1       &   0       &   1       &   1       &   \edit{1}        &   \edit{1}        &     1       &   1\\
+            wait $\rightarrow$ wait                 &   1       &   1       &   1       &   1       &   \edit{1}        &   \edit{1}        &     1       &   1\\
+            \bottomrule
         \end{tabular}
     \end{table}
 

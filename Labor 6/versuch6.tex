@@ -1,0 +1,187 @@
+\documentclass[
+    paper=a4,
+    % fontsize=12,
+    % DIV=calc,
+    parskip=half,
+]{scrreprt}
+
+
+\usepackage[T1]{fontenc}	
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath} 
+
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+\usepackage{svg}
+\usepackage[
+    locale		=	DE, 					%	Deutsche Normen
+	detect-all,								%	Richtige Font im Textmodus/Mathemodus
+	per-mode	=	fraction,				%	Bruchstrich darstellen
+	range-units	=	repeat,					%	Einheiten wiederholt darstellen bei sirange
+	range-phrase=	{{ bis }},	
+]{siunitx}
+\usepackage{amsmath}
+\usepackage{circuitikz}
+
+\usepackage{hyperref}
+
+\renewcommand*{\familydefault}{\sfdefault}
+
+
+\definecolor{colordarkblue}{HTML}{4C1DCC}			% color for internal links
+\definecolor{colorblue}{HTML}{0480CC}				% color for weblinks
+\definecolor{colorgreen}{HTML}{26CC1B}				% color for citations
+\definecolor{coloryellow}{HTML}{F0B707}				% color for missing macro
+\definecolor{colorred}{HTML}{CC1204}				% color for edit macro
+\colorlet{colorgray}{black!40}						% color for editedit macro
+
+
+\KOMAoptions{
+    numbers=noendperiod,
+}
+
+\hypersetup{
+    bookmarksnumbered   =   true,
+    breaklinks          =   true,
+    colorlinks          =   true,
+    linkcolor           =   colordarkblue,
+    urlcolor            =   colorblue,
+    citecolor           =   colorgreen,
+    pdftitle            =   {Labor 4 Jan Hoegen},
+    pdfsubject          =   {Versuchsvorbereitung Labor Digitaltechnik},    
+    pdfauthor           =   {Von Jan Hoegen},
+}
+
+\ctikzset{
+    logic ports=european,
+    logic ports/scale=1.0,
+    logic ports/fill=lightgray,
+    tripoles/european not symbol=ieee circle,
+}
+\usetikzlibrary{babel}
+
+\newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
+\newcommand{\DrawBox}[3][]{%
+    \tikz[overlay,remember picture]{
+    \draw[black,#1]
+      ($(#2)+(-0.5em,2.0ex)$) rectangle
+      ($(#3)+(0.75em,-0.75ex)$);}
+}
+
+\graphicspath{/Anhang}
+
+\newcommand{\shadowsection}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\protect\numberline{\thesection}{#1}}
+}
+
+\newcommand{\legend}[1]{\par\footnotesize\textbf{Legende}: #1\par}
+\newcommand{\figsource}[1]{\par\footnotesize\textbf{Quelle:} #1\par}
+
+\newcommand{\quoteenv}[1]{\glqq #1\grqq} 
+
+\newcommand{\edit}[1]{\textcolor{colorred}{#1}}
+
+\newcommand{\missing}{%
+    \textcolor{coloryellow}{MISSING}%
+	\PackageWarning{\jobname}{You used the 'missing' macro at this line. Remove it before finalising document.}%
+}
+
+
+\titlehead{
+    \textsc{Hochschule Karlsruhe}\\
+    University of Applied Sciences\\
+    Fakultät für Elektro- und Informationstechnik
+    % Studiengang EITB SS 22
+    }
+\subject{Studiengang Elektro- und Informationstechnik (Bachelor)}
+\title{Bericht Digitaltechnik}
+\subtitle{Versuch 6: It all adds up now!}
+\author{von Jan Hoegen\thanks{Matrikelnumer: 82358. E-Mail: \href{mailto:jan.hoegen@web.de}{jan.hoegen@web.de}}}
+\publishers{Betreuer: Prof. Dr.\,-Ing. Jan Bauer}
+\date{erstellt am \today}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+% \newpage
+
+\chapter{Einleitung und Zielsetzung}   
+    Digitale Addition
+    Xilinx Vivaldo
+    Vergleich zu Versuch 2. Deutlich weniger steckaufwand, keien 6 IC mehr nötig und dennoch doppelt so viele bitstellen.
+
+    4 bit addiernetz in vhdl beschrieben, real mit fpga testen.
+
+\chapter{Hardwareentwurf}
+
+    \section{Funktionsbeschreibung}
+    abbildung addierernetz
+    kein carry in
+    carry out ist MSB
+
+    Mit 4 bit DIP Schalter Zahlen einstellen
+    btn0: dip wert für b speichern
+    btn1: dip wert für a speichern
+
+    ausgangszustand mit leds darstellen
+    4 bits der summe s auf dem breadboard
+    carry out über LED1 auf dem Board
+    
+    \section{Entwurf auf dem Breadboard}
+        top level system abbildung
+        adder 4 bit muss entwickelt werden
+        latch 4 bit speichert den summanden. bereits vorgegeben
+
+        pin zuweisung
+
+\chapter{VHDL-Umsetzung}
+
+    \section{Hardwarebeschreibung}
+        top level system Entwurf aus der laboranleitung
+
+        \subsection{halbaddierer}
+            schaltbild halbaddierer
+
+            vhdl entitiy halbaddierer
+
+        \subsection{Volladdierer}
+            Schaltbild Volladdierer
+
+            vhdl entiity Volladdierer
+
+        \subsection{Addiernetz}
+            referenz abbildung 4 bit addiernetz
+
+            vhdl entity addiernetz
+
+    \section{Siumulationsergebnis}
+        testmuster halbaddierer, testmuster volladdierer
+
+        bewertung
+
+    \section{Syntheseergebnis}
+        constrains file
+
+\chapter{Aufbau der Schaltung}
+    foto der schaltung auf dem breadboard
+
+\chapter{Analyseergebnis der Hardware}
+    video testen der schlatung mit testmuster aus 4bit adder
+
+\chapter{Schlussfolgerungen und Fazit}
+
+\chapter{Anhang}
+    vhdl entity latch 4 bit
+
+\end{document}

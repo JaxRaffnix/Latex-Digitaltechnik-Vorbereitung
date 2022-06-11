@@ -1,0 +1,182 @@
+\documentclass[
+    paper=a4,
+    % fontsize=12,
+    % DIV=calc,
+    parskip=half,
+% ]{scrreprt}
+]{scrartcl}
+
+
+\usepackage[T1]{fontenc}	
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{libertine}
+\usepackage[libertine]{newtxmath} 
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+\usepackage{svg}
+\usepackage[
+    locale		=	DE, 					%	Deutsche Normen
+	detect-all,								%	Richtige Font im Textmodus/Mathemodus
+	per-mode	=	fraction,				%	Bruchstrich darstellen
+	range-units	=	repeat,					%	Einheiten wiederholt darstellen bei sirange
+	range-phrase=	{{ bis }},	
+]{siunitx}
+\usepackage{amsmath}
+\usepackage{circuitikz}
+
+\RequirePackage{listingsutf8}					% add source code
+
+\usepackage{hyperref}
+
+\renewcommand*{\familydefault}{\sfdefault}
+
+
+\definecolor{colordarkblue}{HTML}{4C1DCC}			% color for internal links
+\definecolor{colorblue}{HTML}{0480CC}				% color for weblinks
+\definecolor{colorgreen}{HTML}{26CC1B}				% color for citations
+\definecolor{coloryellow}{HTML}{F0B707}				% color for missing macro
+\definecolor{colorred}{HTML}{CC1204}				% color for edit macro
+\colorlet{colorgray}{black!40}						% color for editedit macro
+
+
+\KOMAoptions{
+    numbers=noendperiod,
+}
+
+\hypersetup{
+    bookmarksnumbered   =   true,
+    breaklinks          =   true,
+    colorlinks          =   true,
+    linkcolor           =   colordarkblue,
+    urlcolor            =   colorblue,
+    citecolor           =   colorgreen,
+    pdftitle            =   {Labor 7 Jan Hoegen},
+    pdfsubject          =   {Versuchsvorbereitung Labor Digitaltechnik},    
+    pdfauthor           =   {Von Jan Hoegen},
+}
+
+\ctikzset{
+    logic ports=european,
+    logic ports/scale=1.0,
+    logic ports/fill=lightgray,
+    tripoles/european not symbol=ieee circle,
+}
+\usetikzlibrary{babel}
+
+\newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
+\newcommand{\DrawBox}[3][]{%
+    \tikz[overlay,remember picture]{
+    \draw[black,#1]
+      ($(#2)+(-0.5em,2.0ex)$) rectangle
+      ($(#3)+(0.75em,-0.75ex)$);}
+}
+
+\lstset{%
+	frame			=	tb ,							%	hline top and bottom
+	breaklines		=	true,							%	break lines
+	rulecolor		=	\color{black} ,					%	linecolor black
+	keywordstyle	=	\color{blue} ,
+	commentstyle	=	\color{ForestGreen} ,
+	stringstyle		=	\color{Mulberry} ,
+	title			=	\lstname ,						%	set filename as title 
+	basicstyle		=	\footnotesize\ttfamily ,		%	set font
+	numbers			=	left,							%	numbers left
+	xleftmargin		=	2em,							%	set length on left side
+	framexleftmargin=	1em,
+	inputencoding	=	utf8,  							% Input encoding
+    extendedchars	=	true,  							% Extended ASCII
+}
+\lstdefinestyle{TeX}{language=TeX,						%	more keyword for TeX
+    morekeywords={vspace, hspace, rule, ifdefined, newcommand, setlength, newlength, RequirePackage, ProvidesPackage, NeedsTeXFormat, DeclareOption, ProcessOption, usepackage, documentclass, authorone, authortwo, authorthree, begin, thanks, reversemarginpar, ProcessOptions, definecolor, small, sffamily, AtBeginDocument, newenvironment, cbcolor, textcolor, emph, renewcommand}, 
+}
+\lstset{literate=										%	T1 in listing
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {ã}{{\~a}}1 {ẽ}{{\~e}}1 {ĩ}{{\~i}}1 {õ}{{\~o}}1 {ũ}{{\~u}}1
+  {Ã}{{\~A}}1 {Ẽ}{{\~E}}1 {Ĩ}{{\~I}}1 {Õ}{{\~O}}1 {Ũ}{{\~U}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+  {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1 
+  {~}{{\textasciitilde}}1 {*}{{\normalfont{*}}}1
+}
+
+\graphicspath{/Anhang}
+
+\newcommand{\shadowsection}[1]{%
+	\refstepcounter{section}
+	\addcontentsline{toc}{section}{\protect\numberline{\thesection}{#1}}
+}
+
+\newcommand{\legend}[1]{\par\footnotesize\textbf{Legende}: #1\par}
+\newcommand{\figsource}[1]{\par\footnotesize\textbf{Quelle:} #1\par}
+
+\newcommand{\quoteenv}[1]{\glqq #1\grqq} 
+
+\newcommand{\edit}[1]{\textcolor{colorred}{#1}}
+
+\newcommand{\missing}{%
+    \textcolor{coloryellow}{MISSING}%
+	\PackageWarning{\jobname}{You used the 'missing' macro at this line. Remove it before finalising document.}%
+}
+
+
+\titlehead{
+    \textsc{Hochschule Karlsruhe}\\
+    University of Applied Sciences\\
+    Fakultät für Elektro- und Informationstechnik
+    % Studiengang EITB SS 22
+    }
+\subject{Studiengang Elektro- und Informationstechnik (Bachelor)}
+\title{Versuchsvorbereitung Digitaltechnik}
+\subtitle{Versuch 7: Lasst die Würfel rollen!}
+\author{von Jan Hoegen\thanks{Matrikelnumer: 82358. E-Mail: \href{mailto:jan.hoegen@web.de}{jan.hoegen@web.de}}}
+\publishers{Betreuer: Prof. Dr.\,-Ing. Jan Bauer}
+\date{erstellt am \today}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Pinzuweisung}
+    Die Abbildung \ref{fig:io} zeigt die Pinbelegung des FPGA für den siebten Laborversuch der Vorlesung Digitaltechnik.
+
+    \begin{figure}[hbt]
+        \centering
+        \includegraphics[width=0.5\textwidth]{PinBelegung.png}
+        \caption{Pinbelegung des FPGA}
+        \label{fig:io}
+    \end{figure}
+
+\section{Übergangsschaltnetz des Zählers}
+
+    Der folgende Quellcode zeigt das Übergangsschaltnetz des Zählers. Dabei gibt 
+    \textit{dir} die Zählrichtung an mit 1 für vorwärts und 0 für rückwärts. \textit{Counter} ist der Zählzustand zu jedem Zyklus, \textit{next\_counter} der des folgenden Zyklus. Der Maxmimalwert wird mit \textit{COUNTER\_CEILING} angegeben. Hier wurde er auf den Wert 7 festgelegt.
+    
+    \lstinputlisting[language=VHDL]{vorbereitung.vhdl}
+
+\section{Vervollständigen der Testbench}
+
+    Der nachfolgende Quellcode zeigt die Vervollständigte Testbench für den Zähler. Es werden die Taktzyklen 9 und 10 eingesetzt.
+
+    \lstinputlisting[language=VHDL]{counter_3bit_tb.vhd}
+
+\end{document}
